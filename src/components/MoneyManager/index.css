@@ -1,0 +1,56 @@
+/* Write your CSS here */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+.app-container {
+  padding: 25px;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+.card1 {
+  padding: 15px;
+  width: 100%;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/money-manager/money-manager-bg.png');
+  background-size: cover;
+}
+
+.card2 {
+  width: 100%;
+}
+
+.card3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.trns-card-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.trns-history-container {
+  width: 50%;
+}
+
+.history-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}

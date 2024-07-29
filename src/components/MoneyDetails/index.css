@@ -1,0 +1,38 @@
+/* Write your CSS here */
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+.moneyDetails-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.moneyDetails-card {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 15px;
+  width: 30%;
+  border-radius: 12px;
+}
+
+.moneyDetails-card-img {
+  width: 50px;
+  height: 50px;
+}
+
+.balance-card {
+  background-color: #ecfccb;
+}
+
+.income-card {
+  background-color: #cffafe;
+}
+
+.expenses-card {
+  background-color: #ede9fe;
+}
