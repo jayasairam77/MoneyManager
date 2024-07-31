@@ -1,5 +1,7 @@
 import {Component} from 'react'
 
+import {v4 as uuidv4} from 'uuid'
+
 import MoneyDetails from '../MoneyDetails'
 
 import TransactionItem from '../TransactionItem'
@@ -24,7 +26,9 @@ class MoneyManager extends Component {
     transactionsList: [],
     trnsTitle: '',
     trnsAmount: '',
-    trnsType: 'Income',
+    trnsType: 'INCOME',
+    totalIncome: 0,
+    totalExpenses: 0,
   }
 
   onTitleChange = event => {
@@ -32,28 +36,63 @@ class MoneyManager extends Component {
   }
 
   onAmountChange = event => {
-    this.setState({trnsAmount: event.target.value})
+    const amount = Number(event.target.value)
+    this.setState({trnsAmount: amount})
   }
 
   onTypeChange = event => {
     this.setState({trnsType: event.target.value})
   }
 
+  onIncomeChange = trnsAmount => {
+    const {totalIncome} = this.state
+    this.setState({
+      totalIncome: totalIncome + trnsAmount,
+    })
+  }
+
+  onExpenseChange = trnsAmount => {
+    const {totalExpenses} = this.state
+    this.setState({
+      totalExpenses: totalExpenses + trnsAmount,
+    })
+  }
+
   onClickingAdd = event => {
     event.preventDefault()
-    const {trnsTitle, trnsAmount, trnsType, transactionsList} = this.state
+    const {trnsTitle, trnsAmount, trnsType} = this.state
     const newTransaction = {
+      id: uuidv4(),
       trnsTitle,
       trnsAmount,
       trnsType,
     }
+
     this.setState(pstate => ({
-      transactionsList: {...pstate.transactionsList, newTransaction},
+      transactionsList: [...pstate.transactionsList, newTransaction],
+      totalIncome:
+        trnsType === 'INCOME'
+          ? this.onIncomeChange(trnsAmount)
+          : pstate.totalIncome,
+      totalExpenses:
+        trnsType === 'EXPENSES'
+          ? this.onExpenseChange(trnsAmount)
+          : pstate.totalExpenses,
+      trnsTitle: '',
+      trnsAmount: '',
     }))
   }
 
   render() {
-    const {transactionsList, trnsTitle, trnsAmount, trnsType} = this.state
+    const {
+      transactionsList,
+      trnsTitle,
+      trnsAmount,
+      trnsType,
+      totalIncome,
+      totalExpenses,
+    } = this.state
+
     return (
       <div className="app-container">
         <div className="main-container">
@@ -64,15 +103,15 @@ class MoneyManager extends Component {
             </p>
           </div>
           <div className="card2">
-            <MoneyDetails />
+            <MoneyDetails tincome={totalIncome} texpenses={totalExpenses} />
           </div>
           <div className="card3">
             <div className="trns-card-details">
               <h1>Add Transaction</h1>
               <form className="trns-card-form">
-                <label htmlFor="trns-title">TITLE</label>
+                <label htmlFor="titleInput">TITLE</label>
                 <input
-                  id="trns-title"
+                  id="titleInput"
                   type="text"
                   placeholder="TITLE"
                   value={trnsTitle}
@@ -81,7 +120,7 @@ class MoneyManager extends Component {
                 <label htmlFor="trns-amount">AMOUNT</label>
                 <input
                   id="trns-amount"
-                  type="text"
+                  type="number"
                   placeholder="AMOUNT"
                   value={trnsAmount}
                   onChange={this.onAmountChange}
@@ -93,11 +132,7 @@ class MoneyManager extends Component {
                   onChange={this.onTypeChange}
                 >
                   {transactionTypeOptions.map(eachItem => (
-                    <option
-                      id={eachItem.optionId}
-                      value={eachItem.displayText}
-                      key={eachItem.optionId}
-                    >
+                    <option key={eachItem.optionId} value={eachItem.optionId}>
                       {eachItem.displayText}
                     </option>
                   ))}
@@ -118,7 +153,10 @@ class MoneyManager extends Component {
                 </div>
                 <ul>
                   {transactionsList.map(eachItem => (
-                    <TransactionItem transactionDetails={eachItem} />
+                    <TransactionItem
+                      key={eachItem.id}
+                      transactionDetails={eachItem}
+                    />
                   ))}
                 </ul>
               </div>
